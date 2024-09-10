@@ -1,0 +1,700 @@
+Vistas Inicio
+
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sección de Encabezado -->
+            <div class="col-12 mb-4">
+                <h1 class="text-primary">Bienvenido a la Página de Inicio</h1>
+                <p class="lead">Aquí puedes encontrar información relevante sobre los artículos y otros aspectos importantes.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sección de Artículos -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Artículos
+                    </div>
+                    <div class="card-body">
+                        <p>Aquí se mostrará la lista de artículos disponibles.</p>
+                        <!-- Aquí puedes insertar una tabla o lista de artículos -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Artículo 1</li>
+                            <li class="list-group-item">Artículo 2</li>
+                            <li class="list-group-item">Artículo 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de Artículos Faltantes -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Artículos Faltantes
+                    </div>
+                    <div class="card-body">
+                        <p>Aquí se mostrará la lista de artículos faltantes.</p>
+                        <!-- Aquí puedes insertar una tabla o lista de artículos faltantes -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Artículo Faltante 1</li>
+                            <li class="list-group-item">Artículo Faltante 2</li>
+                            <li class="list-group-item">Artículo Faltante 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+CREAR COMPRAS
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Compra</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <!-- Vinculación del archivo CSS -->
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Registrar Compra</h5>
+                        <form method="POST" action="{% url 'crear_compra' %}">
+                        
+                            <div class="form-group">
+                                <label for="proveedor">Proveedor:</label>
+                                <input type="text" class="form-control" id="proveedor" name="proveedor" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="producto">Producto:</label>
+                                <input type="text" class="form-control" id="producto" name="producto" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad:</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="precio">Precio Unitario:</label>
+                                <input type="number" class="form-control" id="precio" name="precio" required>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-block" onclick="agregarProducto()">Agregar Producto</button>
+                            <hr>
+
+                            <!-- Tabla de productos agregados -->
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detalle-compras">
+                                    <!-- Aquí se agregarán los productos -->
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <label for="total">Total:</label>
+                                <input type="number" class="form-control" id="total" name="total" readonly>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Registrar Compra</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para manejar la tabla de productos -->
+    <script>
+        function agregarProducto() {
+            const producto = document.getElementById('producto').value;
+            const cantidad = document.getElementById('cantidad').value;
+            const precio = document.getElementById('precio').value;
+            const subtotal = cantidad * precio;
+
+            const table = document.getElementById('detalle-compras');
+            const row = table.insertRow();
+            row.innerHTML = `<td>${producto}</td><td>${cantidad}</td><td>${precio}</td><td>${subtotal.toFixed(2)}</td>`;
+
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            let total = 0;
+            const filas = document.querySelectorAll('#detalle-compras tr');
+            filas.forEach(fila => {
+                const subtotal = parseFloat(fila.cells[3].innerText);
+                total += subtotal;
+            });
+            document.getElementById('total').value = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+Inicio de caja
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apertura y Cierre de Caja</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container-fluid d-flex vh-100 justify-content-center align-items-center">
+        <div class="card border-primary shadow-sm" style="width: 100%; max-width: 400px;">
+            <div class="card-body">
+                <h2 class="card-title text-center text-primary">Inicio de Caja</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="amount">Monto Inicial:</label>
+                        <input type="number" class="form-control" id="amount" name="amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Fecha:</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Hora:</label>
+                        <input type="time" class="form-control" id="time" name="time" required>
+                    </div>
+                    <a class="btn btn-primary btn-block mt-4" href="{% url 'inicio"*>Iniciar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        window.onload = function() {
+            const now = new Date();
+            const formattedDate = now.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedDate;
+
+            const formattedTime = now.toTimeString().split(' ')[0].slice(0, 5);
+            document.getElementById('time').value = formattedTime;
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+EDITAR COMPRAS
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Compra</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+            background-color: #f8f9fa; /* Fondo gris claro */
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            border-color: #007bff; /* Borde azul */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        .card-header {
+            background-color: #007bff; /* Azul del encabezado */
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Azul para el botón */
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Azul oscuro al pasar el ratón */
+            border-color: #004085;
+        }
+
+        .form-control {
+            border-color: #007bff; /* Borde azul para los inputs */
+            box-shadow: none; /* Sin sombra en los inputs */
+        }
+
+        .form-control:focus {
+            border-color: #0056b3; /* Azul oscuro al enfocar */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra azul */
+        }
+
+        .btn-block {
+            margin-top: 20px; /* Espaciado superior para el botón */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Editar Compra </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'editar_compra' compra.id %}">
+                    <div class="form-group">
+                        <label for="proveedor">Proveedor</label>
+                        <input type="text" class="form-control" id="proveedor" name="proveedor" value="Nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="producto">Producto:</label>
+                        <input type="text" class="form-control" id="producto" name="producto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio Unitario:</label>
+                        <input type="number" class="form-control" id="precio" name="precio" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+LISTAS DE COMPRAS
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+
+        .left-section, .right-section {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .left-section {
+            width: 70%; /* Ajusta el ancho de la sección izquierda */
+            height: 100%;
+        }
+
+        .right-section {
+            width: 30%; /* Ajusta el ancho de la sección derecha */
+            height: 100%;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            color: white;
+            background-color: #007bff;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <h2>Lista de compras en compras por rendir ($)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Proveedor</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ejemplo de fila -->
+                    <tr>
+                        <td>1</td>
+                        <td>Proveedor Ejemplo</td>
+                        <td>2024-09-08</td>
+                        <td>$100.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="right-section">
+            <h2>Editar Compra</h2>
+            <form>
+                <label for="id">ID (# factura):</label>
+                <input type="text" id="id" name="id">
+                <label for="proveedor">Proveedor:</label>
+                <input type="text" id="proveedor" name="proveedor">
+                <label for="producto">Producto:</label>
+                <input type="text" id="producto" name="producto">
+                <label for="cantidad">Cantidad:</label>
+                <input type="number" id="cantidad" name="cantidad">
+                <label for="precio">Precio Unitario:</label>
+                <input type="number" id="precio" name="precio">
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+INICIO
+
+
+
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sección de Encabezado -->
+            <div class="col-12 mb-4">
+                <h1 class="text-primary">Bienvenido a la Página de Inicio</h1>
+                <p class="lead">Aquí puedes encontrar información relevante sobre los artículos y otros aspectos importantes.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sección de Artículos -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Artículos
+                    </div>
+                    <div class="card-body">
+                        <p>Aquí se mostrará la lista de artículos disponibles.</p>
+                        <!-- Aquí puedes insertar una tabla o lista de artículos -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Artículo 1</li>
+                            <li class="list-group-item">Artículo 2</li>
+                            <li class="list-group-item">Artículo 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de Artículos Faltantes -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Artículos Faltantes
+                    </div>
+                    <div class="card-body">
+                        <p>Aquí se mostrará la lista de artículos faltantes.</p>
+                        <!-- Aquí puedes insertar una tabla o lista de artículos faltantes -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Artículo Faltante 1</li>
+                            <li class="list-group-item">Artículo Faltante 2</li>
+                            <li class="list-group-item">Artículo Faltante 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+APERTURA DE CAJA
+
+
+
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sección de Encabezado -->
+            <div class="col-12 mb-4">
+                <h1 class="text-primary">Bienvenido a la Página de Inicio</h1>
+                <p class="lead">Aquí puedes encontrar información relevante sobre los artículos y otros aspectos importantes.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sección de Artículos -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Artículos
+                    </div>
+                    <div class="card-body">
+                        <p>Aquí se mostrará la lista de artículos disponibles.</p>
+                        <!-- Aquí puedes insertar una tabla o lista de artículos -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Artículo 1</li>
+                            <li class="list-group-item">Artículo 2</li>
+                            <li class="list-group-item">Artículo 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de Artículos Faltantes -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Artículos Faltantes
+                    </div>
+                    <div class="card-body">
+                        <p>Aquí se mostrará la lista de artículos faltantes.</p>
+                        <!-- Aquí puedes insertar una tabla o lista de artículos faltantes -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Artículo Faltante 1</li>
+                            <li class="list-group-item">Artículo Faltante 2</li>
+                            <li class="list-group-item">Artículo Faltante 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+LISTA DE ARTICULOS
+
+
+
+{% extends "base.html" %}
+
+{% block titulo %} Lista de artículos {% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="row">
+        <!-- Columna que ocupa la mitad de la página con la lista de artículos -->
+        <div class="col-md-6">
+            <div class="card" style="min-height: 600px; display: flex; flex-direction: column;">
+                <div class="card-header bg-primary text-white">Listar artículos</div>
+                <div class="card-body" style="flex-grow: 1;">
+                    <h4 class="card-title mb-4">Artículos</h4>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td scope="row">Cargador</td>
+                                    <td>Cargador tipo C Only</td>
+                                    <td>$3000</td>
+                                    <td>
+                                        <a class="btn btn-primary me-2" href="{% url 'editar_articulos' %}" role="button">Editar</a>
+                                        <a class="btn btn-danger" href="#" role="button">Borrar</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td scope="row">Item</td>
+                                    <td>Item</td>
+                                    <td>Item</td>
+                                    <td>
+                                        <a class="btn btn-primary me-2" href="{% url 'editar_articulos' %}" role="button">Editar</a>
+                                        <a class="btn btn-danger" href="#" role="button">Borrar</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Botón "Agregar artículo" alineado en la parte inferior -->
+                <div class="card-footer">
+                    <a class="btn btn-success w-100" href="{% url 'crear_articulos' %}" role="button">Agregar artículo</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Segunda columna con el mismo largo -->
+        <div class="col-md-6">
+            <div class="card" style="min-height: 600px;">
+                <div class="card-header bg-secondary text-white">Detalles adicionales</div>
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Información extra</h4>
+                    <p>Este cuadro contiene información adicional para complementar la lista de artículos.</p>
+                    
+                    <a class="btn btn-info" href="#" role="button">Acción adicional</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+LISTA DE ARTICULOS 
+
+
+{% extends "base.html" %}
+
+{% block titulo %} Lista de articulos {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+  <div class="card-header">Listar articulos</div>
+  <div class="card-body">
+    <h4 class="card-title">Articulos</h4>
+
+    <div class="table-responsive">
+      <table class="table table-primary">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for empleado in empleado %}
+          <tr class="">
+            <td scope="row">{{ empleado.id_emplead }}</td>
+            <td>{{ empleado.nombre_emplead }}</td>
+            <td>{{ empleado.apellido_emplead }}</td>
+            <td> <a name="Editar" class="btn btn-primary" href="{% url "editar_articulos" %}" role="button">Editar</a>
+              | <a name="" id="" class="btn btn-danger" href="#" role="button">Borrar</a>
+            </td>
+          </tr>
+          <tr class="">
+            <td scope="row">Item</td>
+            <td>Item</td>
+            <td>Item</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div><br>
+<a
+  name="agregar" class="btn btn-success" href="{% url "crear_articulos" %}" role="button">Agregar articulo</a
+>
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
